@@ -5,6 +5,7 @@ import com.ruslan.pastebin.Pastebin.dao.UserDAO;
 import com.ruslan.pastebin.Pastebin.entity.Comment;
 import com.ruslan.pastebin.Pastebin.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,16 +24,20 @@ public class UserController {
     public User getUserById(@PathVariable int id){
         return userDAO.getById(id);
     }
+
     @PostMapping("/user")
-    public void saveUser(@RequestBody  User user){
-        userDAO.save(user);
+    public User saveUser(@RequestBody User user) {
+        User savedUser = userDAO.save(user);
+        return savedUser;
     }
-    @PutMapping("/user")
-    public void updateUser(@RequestBody User user){
-        userDAO.update(user);
+    @PutMapping("/user/{id}")
+    public User updateUser(@PathVariable Long id, @RequestBody User user) {
+        user.setId(id);
+        User updatedUser = userDAO.update(user);
+        return updatedUser;
     }
-    @DeleteMapping("/user/id")
-    public void deleteUser(int id){
+    @DeleteMapping("/user/{id}")
+    public void deleteUser(@PathVariable int id) {
         userDAO.deleteById(id);
     }
 }

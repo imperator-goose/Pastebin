@@ -1,5 +1,6 @@
 package com.ruslan.pastebin.Pastebin.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -20,6 +21,7 @@ public class Post {
     private String title;
 
     @Column(name = "content", nullable = false, columnDefinition = "TEXT")
+    @Lob
     private String content;
 
     @Column(name = "short_code",length = 20)
@@ -43,8 +45,8 @@ public class Post {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt = LocalDateTime.now();
 
-    @ManyToOne
-    @JoinColumn(name = "author_id", foreignKey = @ForeignKey(name = "fk_posts_author_id")) // Столбец в таблице posts
+    @ManyToOne()
+    @JoinColumn(name = "author_id", foreignKey = @ForeignKey(name = "fk_posts_author_id"),nullable = false) // Столбец в таблице posts
     private User author;
 
     @OneToMany(mappedBy = "post")

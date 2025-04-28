@@ -1,5 +1,6 @@
 package com.ruslan.pastebin.Pastebin.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
@@ -23,12 +24,12 @@ public class Comment {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt = LocalDateTime.now();
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "post_id", nullable = false,foreignKey = @ForeignKey(name = "fk_comments_post_id"))
+    @ManyToOne()
+    @JoinColumn(name = "post_id", foreignKey = @ForeignKey(name = "fk_comments_post_id"))
     private Post post;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "author_id", nullable = false,foreignKey = @ForeignKey(name = "fk_comments_author_id"))
+    @ManyToOne()
+    @JoinColumn(name = "author_id", foreignKey = @ForeignKey(name = "fk_comments_author_id"))
     private User author;
 
 

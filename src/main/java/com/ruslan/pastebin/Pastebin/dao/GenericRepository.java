@@ -7,8 +7,8 @@ import java.util.List;
 public interface GenericRepository<T, ID>{
     public List<T> getAll();
 
-    public void save(T object);
-    public void update(T object);
+    public T save(T object);
+    public T update(T object);
 
     public T getById(ID id);
 

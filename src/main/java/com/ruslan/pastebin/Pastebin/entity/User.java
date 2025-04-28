@@ -1,5 +1,6 @@
 package com.ruslan.pastebin.Pastebin.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -20,12 +21,14 @@ public class User {
 
 
     @Column(name = "password",nullable = false)
+    @JsonIgnore
     private String password;
 
     @Column(name = "status",nullable = false, columnDefinition = "TINYINT DEFAULT 1 CONSTRAINT ck_users_status CHECK (status IN (0, 1))")
     private Integer status = 1;
 
     @OneToMany(mappedBy = "author") // "author" - это поле в классе Post
+    @JsonIgnore
     private List<Post> posts;
 
 
