@@ -1,14 +1,12 @@
 package com.ruslan.pastebin.Pastebin.controller;
 
-import com.ruslan.pastebin.Pastebin.dao.CommentDAO;
 import com.ruslan.pastebin.Pastebin.dao.UserDAO;
-import com.ruslan.pastebin.Pastebin.entity.Comment;
 import com.ruslan.pastebin.Pastebin.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class UserController {
@@ -17,12 +15,12 @@ public class UserController {
 
     @GetMapping("/user")
     public List<User> getAllUsers(){
-        return userDAO.getAll();
+        return userDAO.findAll();
     }
 
     @GetMapping("/user/{id}")
-    public User getUserById(@PathVariable int id){
-        return userDAO.getById(id);
+    public Optional<User> getUserById(@PathVariable Long id){
+        return userDAO.findById(id);
     }
 
     @PostMapping("/user")
@@ -33,11 +31,11 @@ public class UserController {
     @PutMapping("/user/{id}")
     public User updateUser(@PathVariable Long id, @RequestBody User user) {
         user.setId(id);
-        User updatedUser = userDAO.update(user);
+        User updatedUser = userDAO.save(user);
         return updatedUser;
     }
     @DeleteMapping("/user/{id}")
-    public void deleteUser(@PathVariable int id) {
+    public void deleteUser(@PathVariable Long id) {
         userDAO.deleteById(id);
     }
 }

@@ -2,11 +2,11 @@ package com.ruslan.pastebin.Pastebin.controller;
 
 import com.ruslan.pastebin.Pastebin.dao.PostDAO;
 import com.ruslan.pastebin.Pastebin.entity.Post;
-import com.ruslan.pastebin.Pastebin.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class PostController {
@@ -15,12 +15,12 @@ public class PostController {
 
     @GetMapping("/post")
     public List<Post> getAllPosts(){
-        return postDAO.getAll();
+        return postDAO.findAll();
     }
 
     @GetMapping("/post/{id}")
-    public Post getPostById(@PathVariable int id){
-        return postDAO.getById(id);
+    public Optional<Post> getPostById(@PathVariable Long id){
+        return postDAO.findById(id);
     }
 
     @PostMapping("/post")
@@ -31,11 +31,11 @@ public class PostController {
     @PutMapping("/post/{id}")
     public Post updatePost(@PathVariable Long id, @RequestBody Post post) {
         post.setId(id);
-        Post updatedPost = postDAO.update(post);
+        Post updatedPost = postDAO.save(post);
         return updatedPost;
     }
     @DeleteMapping("/post/{id}")
-    public void deletePost(@PathVariable int id) {
+    public void deletePost(@PathVariable Long id) {
         postDAO.deleteById(id);
     }
 }

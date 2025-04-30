@@ -2,7 +2,11 @@ package com.ruslan.pastebin.Pastebin.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.Collection;
 import java.util.List;
 
 @Entity
@@ -10,7 +14,7 @@ import java.util.List;
         uniqueConstraints = {
                 @UniqueConstraint(name = "uq_users_username", columnNames = "username")
         })
-public class User {
+public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(columnDefinition = "BIGINT CONSTRAINT pk_users_id PRIMARY KEY")
@@ -21,7 +25,6 @@ public class User {
 
 
     @Column(name = "password",nullable = false)
-    @JsonIgnore
     private String password;
 
     @Column(name = "status",nullable = false, columnDefinition = "TINYINT DEFAULT 1 CONSTRAINT ck_users_status CHECK (status IN (0, 1))")
@@ -50,17 +53,15 @@ public class User {
         this.id = id;
     }
 
-    public String getUsername() {
-        return username;
-    }
+
+
+
 
     public void setUsername(String username) {
         this.username = username;
     }
 
-    public String getPassword() {
-        return password;
-    }
+
 
     public void setPassword(String password) {
         this.password = password;
@@ -81,4 +82,32 @@ public class User {
     public void setPosts(List<Post> posts) {
         this.posts = posts;
     }
+
+
+    @Override
+    @JsonIgnore
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of();
+    }
+
+    @Override
+    public String getPassword() { return password; }
+
+    @Override
+    public String getUsername() { return username; }
+
+    @Override
+    @JsonIgnore
+    public boolean isAccountNonExpired() { return true; }
+
+    @Override
+    @JsonIgnore
+    public boolean isAccountNonLocked() { return status == 1; }
+
+    @Override
+    @JsonIgnore
+    public boolean isCredentialsNonExpired() { return true; }
+
+    @Override
+    public boolean isEnabled() { return status == 1; }
 }
