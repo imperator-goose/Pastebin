@@ -17,7 +17,7 @@ import java.util.List;
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(columnDefinition = "BIGINT CONSTRAINT pk_users_id PRIMARY KEY")
+    @Column(columnDefinition = "BIGINT CONSTRAINT pk_users_id PRIMARY KEY", nullable = false)
     private Long id;
 
     @Column(name = "username",nullable = false, length = 50)

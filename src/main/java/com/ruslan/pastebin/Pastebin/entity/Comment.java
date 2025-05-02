@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(columnDefinition = "BIGINT CONSTRAINT pk_comments_id PRIMARY KEY")
+    @Column(columnDefinition = "BIGINT CONSTRAINT pk_comments_id PRIMARY KEY", nullable = false)
     private Long id;
 
     @Column(name = "text", nullable = false, columnDefinition = "TEXT",insertable=false, updatable=false)
@@ -18,18 +18,18 @@ public class Comment {
     @Column(name = "text",nullable = false, columnDefinition = "TINYINT DEFAULT 1 CONSTRAINT ck_comments_status CHECK (status IN (0, 1))")
     private Integer status = 1;
 
-    @Column(name = "created_at", updatable = false)
+    @Column(name = "created_at", updatable = false, nullable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
 
-    @Column(name = "updated_at")
+    @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt = LocalDateTime.now();
 
     @ManyToOne()
-    @JoinColumn(name = "post_id", foreignKey = @ForeignKey(name = "fk_comments_post_id"))
+    @JoinColumn(name = "post_id", foreignKey = @ForeignKey(name = "fk_comments_post_id"), nullable = false)
     private Post post;
 
     @ManyToOne()
-    @JoinColumn(name = "author_id", foreignKey = @ForeignKey(name = "fk_comments_author_id"))
+    @JoinColumn(name = "author_id", foreignKey = @ForeignKey(name = "fk_comments_author_id"), nullable = false)
     private User author;
 
 

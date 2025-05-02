@@ -2,6 +2,7 @@ package com.ruslan.pastebin.Pastebin.controller;
 
 import com.ruslan.pastebin.Pastebin.dao.CommentDAO;
 import com.ruslan.pastebin.Pastebin.entity.Comment;
+import com.ruslan.pastebin.Pastebin.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,29 +12,29 @@ import java.util.Optional;
 @RestController
 public class CommentController {
     @Autowired
-    public CommentDAO commentDAO;
+    public CommentService commentService;
 
     @GetMapping("/comment")
     public List<Comment> getAllComments(){
-        return commentDAO.findAll();
+        return commentService.getAll();
     }
     @GetMapping("/comment/{id}")
     public Optional<Comment> getCommentById(@PathVariable Long id){
-        return commentDAO.findById(id);
+        return commentService.getById(id);
     }
     @PostMapping("/comment")
-    public Comment saveComment(@RequestBody Comment comment){
-        Comment newComment = commentDAO.save(comment);
+    public Comment saveComment(@RequestBody Comment comment) throws Exception {
+        Comment newComment = commentService.save(comment);
         return newComment;
     }
     @PutMapping("/comment/{id}")
-    public Comment updateComment(@PathVariable Long id,@RequestBody Comment comment){
+    public Comment updateComment(@PathVariable Long id,@RequestBody Comment comment) throws Exception {
         comment.setId(id);
-        Comment updatedComment = commentDAO.save(comment);
+        Comment updatedComment = commentService.save(comment);
         return updatedComment;
     }
     @DeleteMapping("/comment")
     public void deleteComment(@PathVariable Long id){
-        commentDAO.deleteById(id);
+        commentService.deleteById(id);
     }
 }

@@ -2,6 +2,7 @@ package com.ruslan.pastebin.Pastebin.controller;
 
 import com.ruslan.pastebin.Pastebin.dao.UserDAO;
 import com.ruslan.pastebin.Pastebin.entity.User;
+import com.ruslan.pastebin.Pastebin.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,31 +12,31 @@ import java.util.Optional;
 @RestController
 public class UserController {
     @Autowired
-    public UserDAO userDAO;
+    public UserService userService;
+
+    @GetMapping("/user/all")
+    public List<User> getAllUsers(){
+        return userService.getAll();
+    }
 
     @GetMapping("/user")
-    public List<User> getAllUsers(){
-        return userDAO.findAll();
+    public List<User> getAllActiveUsers(){
+        return userService.getAllActive();
     }
 
     @GetMapping("/user/{id}")
     public Optional<User> getUserById(@PathVariable Long id){
-        return userDAO.findById(id);
+        return userService.getById(id);
     }
 
-    @PostMapping("/user")
-    public User saveUser(@RequestBody User user) {
-        User savedUser = userDAO.save(user);
-        return savedUser;
-    }
-    @PutMapping("/user/{id}")
-    public User updateUser(@PathVariable Long id, @RequestBody User user) {
-        user.setId(id);
-        User updatedUser = userDAO.save(user);
+
+    @PutMapping("/user")
+    public User updateUser(@RequestBody User user) {
+        User updatedUser = userService.update(user);
         return updatedUser;
     }
     @DeleteMapping("/user/{id}")
     public void deleteUser(@PathVariable Long id) {
-        userDAO.deleteById(id);
+        userService.deleteById(id);
     }
 }

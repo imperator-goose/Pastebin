@@ -14,7 +14,7 @@ import java.util.List;
 public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(columnDefinition = "BIGINT CONSTRAINT pk_posts_id PRIMARY KEY")
+    @Column(columnDefinition = "BIGINT CONSTRAINT pk_posts_id PRIMARY KEY", nullable = false)
     private Long id;
 
     @Column(name = "title", nullable = false, length = 255)
@@ -24,25 +24,25 @@ public class Post {
     @Lob
     private String content;
 
-    @Column(name = "short_code",length = 20)
+    @Column(name = "short_code",length = 20,nullable = false)
     private String shortCode;
 
     @Column(name = "status",nullable = false, columnDefinition = "TINYINT DEFAULT 1 CONSTRAINT ck_posts_status CHECK (status IN (0, 1))")
     private Integer status = 1;
 
-    @Column(name = "views", columnDefinition = "INT DEFAULT 0")
+    @Column(name = "views", columnDefinition = "INT DEFAULT 0", nullable = false)
     private Integer views = 0;
 
-    @Column(name = "upvotes",columnDefinition = "INT DEFAULT 0")
+    @Column(name = "upvotes",columnDefinition = "INT DEFAULT 0", nullable = false)
     private Integer upvotes = 0;
 
-    @Column(name = "downvotes",columnDefinition = "INT DEFAULT 0")
+    @Column(name = "downvotes",columnDefinition = "INT DEFAULT 0", nullable = false)
     private Integer downvotes = 0;
 
-    @Column(name = "created_at", updatable = false)
+    @Column(name = "created_at", updatable = false, nullable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
 
-    @Column(name = "updated_at")
+    @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt = LocalDateTime.now();
 
     @ManyToOne()
