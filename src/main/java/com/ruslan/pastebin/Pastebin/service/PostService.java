@@ -3,6 +3,7 @@ package com.ruslan.pastebin.Pastebin.service;
 import com.ruslan.pastebin.Pastebin.dao.PostDAO;
 import com.ruslan.pastebin.Pastebin.dao.UserDAO;
 import com.ruslan.pastebin.Pastebin.entity.Post;
+import com.ruslan.pastebin.Pastebin.entity.Role;
 import com.ruslan.pastebin.Pastebin.entity.User;
 import jakarta.transaction.Transactional;
 import org.springframework.security.access.AccessDeniedException;
@@ -50,14 +51,13 @@ public class PostService {
             return postDAO.save(post);
         }
     }
-    public void hardDeleteById(Long id) {
-        postDAO.deleteById(id);
-    }
+
     public void deleteById(Long id) {
         User currentUser = getCurrentUser();
         Post post = postDAO.findById(id).get();
-        if (!post.getAuthor().getId().equals(currentUser.getId())) {
-            throw new AccessDeniedException("You can only delete your own posts");
+        if (!post.getAuthor().getId().equals(currentUser.getId())
+                && !currentUser.getRole().equals(Role.ROLE_ADMIN.name())) {
+            throw new AccessDeniedException("You don't have permission to delete this post");
         }else {
             postDAO.block(id);
         }

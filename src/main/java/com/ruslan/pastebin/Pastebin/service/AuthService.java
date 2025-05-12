@@ -1,6 +1,7 @@
 package com.ruslan.pastebin.Pastebin.service;
 
 import com.ruslan.pastebin.Pastebin.dao.UserDAO;
+import com.ruslan.pastebin.Pastebin.entity.Role;
 import com.ruslan.pastebin.Pastebin.entity.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -22,6 +23,8 @@ public class AuthService {
         User user = new User();
         user.setUsername(username);
         user.setPassword(passwordEncoder.encode(password));
+        user.setRole(Role.ROLE_USER.name());
+        user.setStatus(1);
         userDAO.save(user);
     }
 

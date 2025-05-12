@@ -1,6 +1,7 @@
 package com.ruslan.pastebin.Pastebin.service;
 
 import com.ruslan.pastebin.Pastebin.dao.UserDAO;
+import com.ruslan.pastebin.Pastebin.entity.Role;
 import com.ruslan.pastebin.Pastebin.entity.User;
 import jakarta.transaction.Transactional;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -71,7 +72,15 @@ public class UserService {
     }
 
     public void deleteById(Long id) {
-        userDAO.block(id);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User currentUser = getCurrentUser(authentication);
+        if(currentUser.getId().equals(id)) {
+            deleteCurrentUser();
+        } else if (currentUser.getRole().equals(Role.ROLE_ADMIN.name())) {
+            userDAO.deleteById(id);
+        } else {
+            throw new UsernameNotFoundException("User not found");
+        }
     }
     @Transactional
     public void deleteCurrentUser() {

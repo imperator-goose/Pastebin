@@ -20,6 +20,9 @@ public class User implements UserDetails {
     @Column(columnDefinition = "BIGINT CONSTRAINT pk_users_id PRIMARY KEY", nullable = false)
     private Long id;
 
+    @Column(name = "role", nullable = false)
+    private String role; // ROLE_USER или ROLE_ADMIN
+
     @Column(name = "username",nullable = false, length = 50)
     private String username;
 
@@ -53,15 +56,17 @@ public class User implements UserDetails {
         this.id = id;
     }
 
-
-
-
-
     public void setUsername(String username) {
         this.username = username;
     }
 
+    public String getRole() {
+        return role;
+    }
 
+    public void setRole(String role) {
+        this.role = role;
+    }
 
     public void setPassword(String password) {
         this.password = password;
@@ -87,7 +92,7 @@ public class User implements UserDetails {
     @Override
     @JsonIgnore
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of();
+        return List.of(new SimpleGrantedAuthority(role));
     }
 
     @Override

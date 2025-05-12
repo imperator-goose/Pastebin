@@ -5,6 +5,7 @@ import com.ruslan.pastebin.Pastebin.dao.PostDAO;
 import com.ruslan.pastebin.Pastebin.dao.UserDAO;
 import com.ruslan.pastebin.Pastebin.entity.Comment;
 import com.ruslan.pastebin.Pastebin.entity.Post;
+import com.ruslan.pastebin.Pastebin.entity.Role;
 import com.ruslan.pastebin.Pastebin.entity.User;
 import jakarta.transaction.Transactional;
 import org.springframework.security.access.AccessDeniedException;
@@ -48,14 +49,13 @@ public class CommentService {
             return commentDAO.save(comment);
         }
     }
-    public void hardDeleteById(Long id) {
-        commentDAO.deleteById(id);
-    }
+
     public void deleteById(Long id) {
         User currentUser = getCurrentUser();
         Comment comment = commentDAO.findById(id).get();
-        if (!comment.getAuthor().getId().equals(currentUser.getId())) {
-            throw new AccessDeniedException("You can only delete your own comments");
+        if (!comment.getAuthor().getId().equals(currentUser.getId())
+                && !currentUser.getRole().equals(Role.ROLE_ADMIN.name())) {
+            throw new AccessDeniedException("You don't have permission to delete this post");
         }else{
             commentDAO.block(id);
         }

@@ -1,5 +1,6 @@
 package com.ruslan.pastebin.Pastebin.controller;
 
+import com.ruslan.pastebin.Pastebin.dto.UserDTO;
 import com.ruslan.pastebin.Pastebin.entity.User;
 import com.ruslan.pastebin.Pastebin.service.AuthService;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +16,8 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<String> register(@RequestBody User user) {
+    public ResponseEntity<String> register(@RequestBody UserDTO user) {
+        System.out.println(user + " привет");
         authService.registerUser(user.getUsername(), user.getPassword());
         return ResponseEntity.ok("User registered successfully");
     }
