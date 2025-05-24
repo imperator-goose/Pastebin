@@ -26,16 +26,15 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(csrf -> csrf.disable())
+                .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/auth/register").permitAll()
-                        .requestMatchers("/posts/delete/**", "/comments/delete/**","/users/delete/**").hasRole("ADMIN")
-                        .requestMatchers("/posts/**", "/comments/**").hasAnyRole("USER", "ADMIN")
+                        .requestMatchers("/posts/delete/", "/comments/delete/","/users/delete/").hasRole("ADMIN")
+                        .requestMatchers("/posts/", "/comments/**").hasAnyRole("USER", "ADMIN")
                         .anyRequest().authenticated()
                 )
                 .userDetailsService(userDetails)
-                .httpBasic(httpBasic -> httpBasic
-                        .authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/auth/register"))
-                );
+                .httpBasic(Customizer.withDefaults());
         return http.build();
     }
 

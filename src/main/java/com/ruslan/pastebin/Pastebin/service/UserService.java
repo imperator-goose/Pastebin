@@ -70,7 +70,7 @@ public class UserService {
     public void hardDeleteById(Long id) {
         userDAO.deleteById(id);
     }
-
+    
     public void deleteById(Long id) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User currentUser = getCurrentUser(authentication);

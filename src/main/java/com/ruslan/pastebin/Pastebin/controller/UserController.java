@@ -10,32 +10,33 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
+@RequestMapping("/users")
 public class UserController {
     @Autowired
     public UserService userService;
 
-    @GetMapping("/user/all")
+    @GetMapping("/getAll")
     public List<User> getAllUsers(){
         return userService.getAll();
     }
 
-    @GetMapping("/user")
+    @GetMapping("/getAllActive")
     public List<User> getAllActiveUsers(){
         return userService.getAllActive();
     }
 
-    @GetMapping("/user/{id}")
+    @GetMapping("/getById/{id}")
     public Optional<User> getUserById(@PathVariable Long id){
         return userService.getById(id);
     }
 
 
-    @PutMapping("/user")
+    @PutMapping("/update")
     public User updateUser(@RequestBody User user) {
         User updatedUser = userService.update(user);
         return updatedUser;
     }
-    @DeleteMapping("/user/{id}")
+    @DeleteMapping("/delete/{id}")
     public void deleteUser(@PathVariable Long id) {
         userService.deleteById(id);
     }

@@ -21,7 +21,7 @@ public class User implements UserDetails {
     private Long id;
 
     @Column(name = "role", nullable = false)
-    private String role; // ROLE_USER или ROLE_ADMIN
+    private String role;
 
     @Column(name = "username",nullable = false, length = 50)
     private String username;
@@ -33,13 +33,11 @@ public class User implements UserDetails {
     @Column(name = "status",nullable = false, columnDefinition = "TINYINT DEFAULT 1 CONSTRAINT ck_users_status CHECK (status IN (0, 1))")
     private Integer status = 1;
 
-    @OneToMany(mappedBy = "author") // "author" - это поле в классе Post
+    @OneToMany(mappedBy = "author")
     @JsonIgnore
     private List<Post> posts;
 
 
-
-    // Constructors, getters, and setters
     public User() {}
 
     public User(String username,  String password, List<Post> posts) {
